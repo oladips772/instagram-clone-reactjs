@@ -6,7 +6,7 @@ import Stories from "./Stories";
 import Suggestions from "./Suggestions";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
-import { db, auth } from "../firebase";
+import { auth } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 function Feed() {
   const [openModal, setOpenModal] = useRecoilState(modalState);

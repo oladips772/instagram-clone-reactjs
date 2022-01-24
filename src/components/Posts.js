@@ -2,18 +2,15 @@
 import React, { useState, useEffect } from "react";
 import Post from "../shared/Post";
 import {
-  addDoc,
   collection,
-  updateDoc,
   query,
-  serverTimestamp,
-  doc,
   onSnapshot,
   orderBy,
 } from "firebase/firestore";
-import { db, auth, storage } from "../firebase";
+import { db } from "../firebase";
 
 function Posts() {
+
   const [posts, setPosts] = useState([]);
   useEffect(() => {
     const docRef = collection(db, "posts");
@@ -26,7 +23,7 @@ function Posts() {
         }))
       );
     });
-  });
+  },[posts]);
 
   return (
     <div className="mt-6">

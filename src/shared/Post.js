@@ -14,7 +14,6 @@ import {
   collection,
   addDoc,
   setDoc,
-  updateDoc,
   doc,
   serverTimestamp,
   query,
@@ -146,7 +145,7 @@ function Post({
           <>
             {comments.length >= 1 && (
               <>
-                <span className="font-bold mx-2">comments:</span>
+                <span className="font-bold mx-2">{comments.length == 1 ? "comment" : "comments"}</span>
                 <div className="overflow-y-scroll max-h-20 mx-4 mb-4">
                   {comments.map(({ id, data: { comment, user, userImg } }) => (
                     <div className="flex space-x-2 items-center my-3" key={id}>

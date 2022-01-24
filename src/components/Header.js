@@ -1,5 +1,5 @@
 /** @format */
-import React, { useState } from "react";
+import React from "react";
 import { HomeIcon } from "@heroicons/react/solid";
 import {
   SearchIcon,
@@ -9,7 +9,7 @@ import {
 } from "@heroicons/react/outline";
 import { useRecoilState } from "recoil";
 import { modalState } from "../atoms/modalAtom";
-import { db, auth, provider } from "../firebase";
+import { auth, provider } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { signInWithPopup } from "firebase/auth";
 

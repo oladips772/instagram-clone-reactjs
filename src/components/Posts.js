@@ -1,43 +1,51 @@
 /** @format */
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Post from "../shared/Post";
-
-const posts = [
-  {
-    id: 1,
-    username: "Robert",
-    avatar:
-      "https://ichef.bbci.co.uk/news/976/cpsprodpb/3C8A/production/_107189451_hi054338739.jpg",
-    postImg:
-      "https://ichef.bbci.co.uk/news/976/cpsprodpb/3C8A/production/_107189451_hi054338739.jpg",
-    caption: "cinema things on point",
-    email: "robert@gmail.com",
-  },
-  {
-    id: 2,
-    username: "Dybala",
-    avatar:
-      "https://cdn.vox-cdn.com/thumbor/m2-k-R1l2oI04DSKFT77dOUDr8c=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23069630/1357348925.jpg",
-    postImg:
-      "https://cdn.vox-cdn.com/thumbor/m2-k-R1l2oI04DSKFT77dOUDr8c=/1400x1400/filters:format(jpeg)/cdn.vox-cdn.com/uploads/chorus_asset/file/23069630/1357348925.jpg",
-    caption: "footbal always",
-    email: "dybala@gmail.com",
-  },
-];
+import {
+  addDoc,
+  collection,
+  updateDoc,
+  query,
+  serverTimestamp,
+  doc,
+  onSnapshot,
+  orderBy,
+} from "firebase/firestore";
+import { db, auth, storage } from "../firebase";
 
 function Posts() {
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    const docRef = collection(db, "posts");
+    const Queried = query(docRef, orderBy("timestamp", "desc"));
+    onSnapshot(Queried, (snapshot) => {
+      setPosts(
+        snapshot.docs.map((doc) => ({
+          id: doc.id,
+          data: doc.data(),
+        }))
+      );
+    });
+  });
+
   return (
     <div className="mt-6">
-      {posts.map((data, index) => (
-        <Post
-          key={index}
-          caption={data.caption}
-          postImg={data.postImg}
-          username={data.username}
-          avatar={data.avatar}
-          email={data.email}
-        />
-      ))}
+      {posts.map(
+        ({
+          data: { caption, userName, userEmail, profileImage, image },
+          id,
+        }) => (
+          <Post
+            key={id}
+            caption={caption}
+            messageImage={image}
+            userName={userName}
+            profileImage={profileImage}
+            userEmail={userEmail}
+            id={id}
+          />
+        )
+      )}
     </div>
   );
 }

@@ -1,5 +1,8 @@
 /** @format */
 import React from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth } from "../firebase";
+import { signOut } from "firebase/auth";
 
 const suggested = [
   {
@@ -40,21 +43,50 @@ const suggested = [
 ];
 
 function Suggestions() {
+  const [user] = useAuthState(auth);
+  const LOGOUT = async () => {
+    await signOut(auth).catch((err) => alert(err.message));
+  };
+  
   return (
     <div>
       {/* user div */}
-      <div className="flex items-center">
+      <div className="flex items-center mb-4">
         <img
-          src="https://media-exp1.licdn.com/dms/image/C4E03AQFOfPu93n6Kxw/profile-displayphoto-shrink_200_200/0/1632301101571?e=1647475200&v=beta&t=mn3e607trJc74pC6N2ZV4hHT7uB7xfavOKA7o_TRxKA"
+          src={user?.photoURL}
           className="h-10 w-10 rounded-full mr-2"
           alt=""
         />
         {/* user info div */}
         <div className="flex flex-col w-full mr-4">
-          <h3 className="font-bold -mb-1">oladipupo</h3>
-          <p className="text-sm text-gray-600">oladips200@gmail.com</p>
+          <h3 className="font-bold -mb-1">{user.displayName}</h3>
+          <p className="text-sm text-gray-600">{user.email}</p>
         </div>
-        <button className="text-blue-600 font-bold">Logout</button>
+        <button className="text-blue-600 font-bold" onClick={LOGOUT}>
+          {user ? "logout" : "login"}
+        </button>
+      </div>
+      <div className="flex items-center mb-6 mt-8">
+        <h3 className="font-bold flex-1 text-gray-600">Suggested for you</h3>
+        <p className="text-sm font-bold cursor-pointer">See more</p>
+      </div>
+      {/* suggestions div */}
+      <div>
+        {suggested.map((person, id) => (
+          <div className="flex items-center mb-4" key={id}>
+            <img
+              src={person.avatar}
+              alt=""
+              className="h-7 w-7 rounded-full mr-2 object-contain"
+            />
+            {/* user info div */}
+            <div className="flex flex-col w-full mr-4">
+              <h3 className="font-bold -mb-1 text-sm">{person.username}</h3>
+              <p className="text-sm text-gray-600">{person.title}</p>
+            </div>
+            <button className="text-blue-600 font-bold text-sm">Follow</button>
+          </div>
+        ))}
       </div>
     </div>
   );

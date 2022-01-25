@@ -9,7 +9,6 @@ import {
   updateDoc,
   serverTimestamp,
   doc,
-  setDoc,
 } from "firebase/firestore";
 import { db, auth, storage } from "../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
